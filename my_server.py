@@ -1,18 +1,34 @@
 ﻿import os
-from bottle import Bottle, request  
-import sentry_sdk  
-from sentry_sdk.integrations.bottle import BottleIntegration  
-  
-sentry_sdk.init(dsn=os.environ.get("SENTRY_DSN"), integrations=[BottleIntegration()])  
-  
-app = Bottle()  
+import sentry_sdk
+from bottle import run, route, HTTPResponse
+from sentry_sdk.integrations.bottle import BottleIntegration
+from userconf import USER_DSN
 
-@app.route('/success') 
-def success():
-    return    
+sentry_sdk.init(
+    dsn=USER_DSN,
+    integrations=[BottleIntegration()]
+)
 
-@app.route('/fail') 
-def fail():    
+
+@route("/")
+def hello_page():
+    return HTTPResponse(status=200, body="Hello all!")
+
+
+@route('/fail')
+def index_fail():
     raise RuntimeError("There is an error!")
-    
-app.run(host='localhost', port=8080)
+
+
+@route('/success')
+def index_success():
+    return HTTPResponse(status=200, body="Success!")
+
+
+if __name__ == "__main__":
+    run(
+        host='0.0.0.0',
+        port=int(os.environ.get('PORT', 5000)),
+        server='gunicorn',
+        workers=3
+    )
