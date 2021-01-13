@@ -1,1 +1,1 @@
-USER_DSN = 'https://0798cf0e952f479480e8b65241658ba8@o472515.ingest.sentry.io/5506736'
+USER_DSN = "https://e6095e423d5b4d80bf7dc7f4a044a171@o504246.ingest.sentry.io/5591127"
